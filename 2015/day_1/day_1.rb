@@ -14,18 +14,36 @@
 # ()) and ))( both result in floor -1 (the first basement level).
 # ))) and )())()) both result in floor -3.
 # To what floor do the instructions take Santa?
+#
+# Now, given the same instructions, find the position of the
+# first character that causes him to enter the basement (floor -1).
+# The first character in the instructions has position 1, the second
+# character has position 2, and so on.
+#
+# For example:
+#
+# ) causes him to enter the basement at character position 1.
+# ()()) causes him to enter the basement at character position 5.
+# What is the position of the character that causes Santa to first enter the basement?
 
 def floor_manager
   directions = File.open('input.txt', 'r').read
   directions = directions.split("\n").first.chars
 
-  zero_floor = 0
+  floor = 0
+  basement_position = nil
 
-  directions.map do |floor|
-    floor == '(' ? zero_floor += 1 : zero_floor -= 1
+  directions.map.with_index(1) do |way, index|
+    if way == '('
+      floor += 1
+    else
+      floor -= 1
+      basement_position = index if basement_position.nil? && floor == -1
+    end
   end
 
-  puts zero_floor
+  puts floor
+  puts basement_position
 end
 
 floor_manager
