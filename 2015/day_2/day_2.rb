@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The elves are running low on wrapping paper, and so they need to
 # submit an order for more. They have a list of the dimensions
 # (length l, width w, and height h) of each present, and only want
@@ -31,14 +33,15 @@
 #
 # For example:
 #
-# A present with dimensions 2x3x4 requires 2+2+3+3 = 10 feet of ribbon to wrap the present plus 2*3*4 = 24 feet of ribbon for the bow, for a total of 34 feet.
-# A present with dimensions 1x1x10 requires 1+1+1+1 = 4 feet of ribbon to wrap the present plus 1*1*10 = 10 feet of ribbon for the bow, for a total of 14 feet.
+# A present with dimensions 2x3x4 requires 2+2+3+3 = 10 feet of ribbon to wrap
+# the present plus 2*3*4 = 24 feet of ribbon for the bow, for a total of 34 feet.
+# A present with dimensions 1x1x10 requires 1+1+1+1 = 4 feet of ribbon to wrap
+# the present plus 1*1*10 = 10 feet of ribbon for the bow, for a total of 14 feet.
 # How many total feet of ribbon should they order?
-
 
 def calculate_wrapping_paper
   box_sizes = File.open('input.txt', 'r').read
-  box_sizes = box_sizes.split("\n").map{|b| b.split("x").map(&:to_i)}
+  box_sizes = box_sizes.split("\n").map { |b| b.split('x').map(&:to_i) }
 
   paper_size_to_buy = 0
   ribbon_size_to_buy = 0
@@ -48,9 +51,9 @@ def calculate_wrapping_paper
     w = box_size[1]
     h = box_size[2]
 
-    surface_a = l*w
-    surface_b = w*h
-    surface_c = h*l
+    surface_a = l * w
+    surface_b = w * h
+    surface_c = h * l
 
     box_surfaces = 2 * (surface_a + surface_b + surface_c)
     paper_size_to_buy += box_surfaces + [surface_a, surface_b, surface_c].min
