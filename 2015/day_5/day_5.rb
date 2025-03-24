@@ -1,29 +1,35 @@
-# ---Day 5 : Doesn 't He Have Intern-Elves For This? ---
-# Santa needs help figuring out which strings in his text file are naughty or nice.
-#
-# A nice string is one with all of the following properties:
-#
-# It contains at least three vowels (aeiou only), like aei, xazegov, or aeiouaeiouaeiou.
-# It contains at least one letter that appears twice in a row, like xx, abcdde (dd), or aabbccdd (aa, bb, cc, or dd).
-# It does not contain the strings ab, cd, pq, or xy, even if they are part of one of the other requirements.
+# Now, a nice string is one with all of the following properties:
+
+# - It contains a pair of any two letters that appears at least twice
+#   in the string without overlapping, like xyxy (xy) or aabcdefgaa (aa),
+#   but not like aaa (aa, but it overlaps).
+
+# - It contains at least one letter which repeats with exactly one
+#   letter between them, like xyx, abcdefeghi (efe), or even aaa.
+
 # For example:
-#
-# ugknbfddgicrmopn is nice because it has at least three vowels (u...i...o...), a double letter (...dd...), and none of the disallowed substrings.
-# aaa is nice because it has at least three vowels and a double letter, even though the letters used by different rules overlap.
-# jchzalrnumimnmhp is naughty because it has no double letter.
-# haegwjzuvuyypxyu is naughty because it contains the string xy.
-# dvszwmarrgswjxmb is naughty because it contains only one vowel.
-# How many strings are nice?
+
+# - qjhvhtzxzqqjkmpb is nice because it has a pair that appears twice (qj)
+#   and a letter that repeats with exactly one letter between them (zxz).
+
+# - xxyxx is nice because it has a pair that appears twice
+#   and a letter that repeats with one between,
+#   even though the letters used by each rule overlap.
+
+# - uurcxstgmygtbstg is naughty because it has a pair (tg)
+#   but no repeat with a single letter between them.
+
+# - ieodomkazucvgmuy is naughty because it has a repeating letter
+#   with one between (odo), but no pair that appears twice.
+
+# How many strings are nice under these new rules?
 
 
-
-file_path = File.join(File.dirname(__FILE__), 'input2.txt')
+file_path = File.join(File.dirname(__FILE__), 'input.txt')
 strings = File.open(file_path, 'r').read
 
 strings = strings.split("\n")
 
-# vowels = %w[a e i o u]
-# bad_strings = %w[ab cd pq xy]
 nice = 0
 
 strings.each do |string|
@@ -32,17 +38,14 @@ strings.each do |string|
 
   (0..string.length - 2).each do |i|
     pair = string[i, 2]
-    next if pair[0] != pair[1]
 
     if seen_pairs[pair].nil?
       seen_pairs[pair] = i
     elsif i - seen_pairs[pair] > 1
       duplicated_pairs +=1
-      puts "#{pair} in string #{string}"
+      # puts "#{pair} in string #{string}"
     end
   end
-
-  puts "Duplicated pairs #{duplicated_pairs}"
 
   chars = string.chars
   repeated_char = 0
@@ -52,15 +55,19 @@ strings.each do |string|
     end
   end
 
-  puts "Repeated chars #{repeated_char}"
 
   if duplicated_pairs > 0 && repeated_char > 0
     nice += 1
+    puts "Duplicated pairs #{duplicated_pairs}"
+    puts "Repeated chars #{repeated_char}"
+    puts "-----------------------------------"
     puts "Nice string - #{string}"
   end
 
 
   ## First Part
+  ## vowels = %w[a e i o u]
+  ## bad_strings = %w[ab cd pq xy]
   # vowels_in_str = 0
   # doubles = 0
   #
@@ -73,14 +80,6 @@ strings.each do |string|
   # end
   #
   # nice += 1 if vowels_in_str >= 3 && doubles >= 1
-
-
 end
 
 puts nice
-
-
-
-
-
-
